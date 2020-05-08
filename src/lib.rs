@@ -69,10 +69,10 @@
 #![allow(non_upper_case_globals)]
 #![allow(non_snake_case)]
 
-#[cfg(double_precision)]
-pub type Base = f32;
+#[cfg(feature = "double_precision")]
+pub type Base = f64;
 
-#[cfg(not(double_precision))]
+#[cfg(not(feature = "double_precision"))]
 pub type Base = f32;
 
 #[macro_export]
