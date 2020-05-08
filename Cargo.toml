@@ -1,0 +1,7 @@
+[package]
+name = "yaum"
+version = "0.1.0"
+license = "MIT"
+description = "Yet Another Units of Measurement"
+authors = ["Dániel Buga <daniel@revolutionrobotics.org>"]
+edition = "2018"
