@@ -5,3 +5,6 @@ license = "MIT"
 description = "Yet Another Units of Measurement"
 authors = ["Dániel Buga <daniel@revolutionrobotics.org>"]
 edition = "2018"
+
+[features]
+double_precision = []
