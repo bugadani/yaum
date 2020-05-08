@@ -150,8 +150,13 @@ pub mod length {
 }
 
 pub mod velocity {
-    impl_unit!(Velocity);
-    impl_unit!(Acceleration);
+    impl_unit!(Velocity, {
+        mps: 1.0,
+        kph: 1_000.0 / 3_600.0
+    });
+    impl_unit!(Acceleration, {
+        mps2: 1.0
+    });
     pub type Speed = Velocity;
 
     pub mod consts {
@@ -187,10 +192,17 @@ pub mod conversions {
             use crate::length::*;
             use crate::velocity::*;
 
-            fn t(_v: Speed) {
+            fn t1(_v: Speed) {
             }
 
-            t(1.0 * m / s);
+            fn t2(_a: Acceleration) {
+            }
+
+            t1(1.0 * m / s);
+            t2(1.0 * m / s / s);
+
+            assert_eq!(1.0 * mps2, 1.0 * m / s / s);
+            assert_eq!(1.0 * km / min, 60.0 * km / h);
         }
 
         #[test]
