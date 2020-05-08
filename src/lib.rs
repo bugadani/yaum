@@ -11,8 +11,7 @@ pub type Base = f32;
 
 #[macro_export]
 macro_rules! impl_unit {
-    ($type:ident) => { crate::impl_unit!($type, crate::Base); };
-    ($type:ident, $basetype:ty) => { crate::impl_unit!($type, $basetype, {}); };
+    ($type:ident) => { crate::impl_unit!($type, {}); };
     ($type:ident, { $( $unit:ident: $value:expr ),* }) => { crate::impl_unit!($type, crate::Base, { $( $unit: $value ),* }); };
 
     ($type:ident, $basetype:ty, {$( $unit:ident: $value:expr ),*}) => {
@@ -165,10 +164,6 @@ pub mod velocity {
         pub const c: Velocity = Velocity(299_792_458.0);
         pub const g: Acceleration = Acceleration(9.80665);
     }
-}
-
-pub mod digital {
-    impl_unit!(LSB, usize);
 }
 
 pub mod conversions {
