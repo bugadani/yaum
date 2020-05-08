@@ -109,6 +109,11 @@ pub mod frequency {
     pub const kHz: Frequency = Frequency(1_000.0);
     pub const MHz: Frequency = Frequency(1_000_000.0);
 
+    pub type SamplingFrequency = Frequency;
+
+    pub const sps:  Frequency = Frequency(1.0);
+    pub const ksps: Frequency = Frequency(1_000.0);
+
     convert_unit!(Frequency, AngularFrequency, 2.0 * core::f32::consts::PI);
 }
 
@@ -160,7 +165,7 @@ pub mod conversions {
             use crate::length::*;
             use crate::velocity::*;
 
-            fn t(_sec: Speed) {
+            fn t(_v: Speed) {
             }
 
             t(1.0 * m / s);
