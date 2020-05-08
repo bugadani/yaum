@@ -27,7 +27,7 @@
 //! Define custom units and conversions using the `impl_unit!`, `convert_div!` and `convert_unit!` macros.
 //!
 //! ```rust
-//! # #[macro_use] extern crate yaum;
+//! #[macro_use] extern crate yaum;
 //! use yaum::*;
 //! use yaum::time::*;
 //!
@@ -70,12 +70,29 @@
 #![allow(non_snake_case)]
 
 #[cfg(feature = "double_precision")]
+/// Base type. `f64` if `double_precision` is enabled, otherwise `f32`.
 pub type Base = f64;
 
 #[cfg(not(feature = "double_precision"))]
+/// Base type. `f64` if `double_precision` is enabled, otherwise `f32`.
 pub type Base = f32;
 
 #[macro_export]
+/// Define a unit. Specify units, constants in brackets.
+///
+/// # Example:
+///
+/// ```rust
+/// #[macro_use] extern crate yaum;
+/// use yaum::*;
+///
+/// yaum::impl_unit!(BitSize, {
+///     b: 1.0,
+///     kb: 1024.0,
+///     Mb: 1024.0 * 1024.0
+/// });
+/// # fn main() {}
+/// ```
 macro_rules! impl_unit {
     ($type:ident) => { crate::impl_unit!($type, {}); };
     ($type:ident, { $( $unit:ident: $value:expr ),* }) => { crate::impl_unit!($type, crate::Base, { $( $unit: $value ),* }); };
@@ -151,6 +168,32 @@ macro_rules! impl_unit {
 }
 
 #[macro_export]
+/// Specify the result of division of two types.
+///
+/// # Example
+///
+/// ```rust
+/// #[macro_use] extern crate yaum;
+/// use yaum::*;
+/// use yaum::time::*;
+///
+/// yaum::impl_unit!(BitSize, {
+///     b: 1.0,
+///     kb: 1024.0,
+///     Mb: 1024.0 * 1024.0
+/// });
+///
+/// yaum::impl_unit!(BitSpeed, {
+///     bps: 1.0,
+///     kbps: 1024.0,
+///     Mbps: 1024.0 * 1024.0
+/// });
+///
+/// // define relationship between units (BitSpeed = BitSize/Time)
+/// yaum::convert_div!(BitSize, Time, BitSpeed);
+///
+/// # fn main() {}
+/// ```
 macro_rules! convert_div {
     ($left:ty, $right: ty, $result: ty) => {
         impl core::ops::Div<$right> for $left {
@@ -164,6 +207,32 @@ macro_rules! convert_div {
 }
 
 #[macro_export]
+/// Specify the conversion factor between two types.
+///
+/// # Example
+///
+/// ```rust
+/// #[macro_use] extern crate yaum;
+/// use yaum::*;
+/// use yaum::time::*;
+///
+/// yaum::impl_unit!(BitSize, {
+///     b: 1.0,
+///     kb: 1024.0,
+///     Mb: 1024.0 * 1024.0
+/// });
+///
+/// yaum::impl_unit!(ByteSize, {
+///     B: 1.0,
+///     kB: 1024.0,
+///     MB: 1024.0 * 1024.0
+/// });
+///
+/// // define conversion between the two units (1 byte = 8 bits):
+/// yaum::convert_unit!(ByteSize, BitSize, 8.0);
+///
+/// # fn main() {}
+/// ```
 macro_rules! convert_unit {
     ($from:ty, $to: ty, $factor: expr) => {
         impl From<$from> for $to {
