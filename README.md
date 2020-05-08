@@ -1,7 +1,9 @@
-Yet Another Units of Measurement library
+Yet Another Units of Measurement library [![crates.io](https://img.shields.io/crates/v/yaum.svg)](https://crates.io/crates/yaum)
 ========================================
 
 This crate provides type-safe basic scientific units and constants for `no_std` programs.
+
+[Documentation](https://docs.rs/yaum/)
 
 Example
 -------
