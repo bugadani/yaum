@@ -154,8 +154,8 @@ pub mod digital {
 pub mod conversions {
     use crate::*;
 
-    convert_div!(crate::length::Length, crate::time::Time, crate::velocity::Velocity);
-    convert_div!(crate::velocity::Velocity, crate::time::Time, crate::velocity::Acceleration);
+    convert_div!(length::Length, time::Time, velocity::Velocity);
+    convert_div!(velocity::Velocity, time::Time, velocity::Acceleration);
 
     #[cfg(test)]
     mod tests {
