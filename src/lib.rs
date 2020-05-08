@@ -1,6 +1,7 @@
 //! This crate provides type-safe basic scientific units and constants for `no_std` programs.
 #![cfg_attr(not(test), no_std)]
 #![allow(non_upper_case_globals)]
+#![allow(non_snake_case)]
 
 #[cfg(double_precision)]
 pub type Base = f32;
@@ -11,15 +12,25 @@ pub type Base = f32;
 #[macro_export]
 macro_rules! impl_unit {
     ($type:ident) => { crate::impl_unit!($type, crate::Base); };
+    ($type:ident, $basetype:ty) => { crate::impl_unit!($type, $basetype, {}); };
+    ($type:ident, { $( $unit:ident: $value:expr ),* }) => { crate::impl_unit!($type, crate::Base, { $( $unit: $value ),* }); };
 
-    ($type:ident, $basetype:ty) => {
+    ($type:ident, $basetype:ty, {$( $unit:ident: $value:expr ),*}) => {
         #[derive(Copy, Clone, Debug, Default, PartialEq, PartialOrd)]
         pub struct $type(pub $basetype);
 
         impl $type {
-            pub fn new(value: $basetype) -> Self {
+            pub const fn new(value: $basetype) -> Self {
                 Self(value)
             }
+
+            pub const fn dimensionless(self) -> $basetype {
+                self.0
+            }
+
+            $( pub fn $unit(self) -> $basetype {
+                self.dimensionless() * $value
+            } )*
         }
 
         impl core::ops::Mul<$basetype> for $type {
@@ -69,6 +80,8 @@ macro_rules! impl_unit {
                 $type(self.0 / rhs)
             }
         }
+
+        $( pub const $unit: $type = $type($value); )*
     };
 }
 
@@ -102,36 +115,38 @@ macro_rules! convert_unit {
 }
 
 pub mod frequency {
-    impl_unit!(Frequency);
-    impl_unit!(AngularFrequency);
+    impl_unit!(Frequency, {
+        Hz: 1.0,
+        kHz: 1_000.0,
+        MHz: 1_000_000.0,
 
-    pub const Hz:  Frequency = Frequency(1.0);
-    pub const kHz: Frequency = Frequency(1_000.0);
-    pub const MHz: Frequency = Frequency(1_000_000.0);
+        sps: 1.0,
+        ksps: 1_000.0
+    });
+    impl_unit!(AngularFrequency, {
+        rad_per_s: 1.0
+    });
 
     pub type SamplingFrequency = Frequency;
-
-    pub const sps:  Frequency = Frequency(1.0);
-    pub const ksps: Frequency = Frequency(1_000.0);
 
     convert_unit!(Frequency, AngularFrequency, 2.0 * core::f32::consts::PI);
 }
 
 pub mod time {
-    impl_unit!(Time);
-
-    pub const us: Time = Time(0.000_001);
-    pub const ms: Time = Time(0.001);
-    pub const s: Time = Time(1.0);
-    pub const min: Time = Time(60.0);
-    pub const h: Time = Time(3600.0);
+    impl_unit!(Time, {
+        us: 0.000_001,
+        ms: 0.001,
+        s: 1.0,
+        min: 60.0,
+        h: 3600.0
+    });
 }
 
 pub mod length {
-    impl_unit!(Length);
-
-    pub const m: Length = Length(1.0);
-    pub const km: Length = Length(1_000.0);
+    impl_unit!(Length, {
+        m: 1.0,
+        km: 1_000.0
+    });
 }
 
 pub mod velocity {
@@ -159,6 +174,13 @@ pub mod conversions {
 
     #[cfg(test)]
     mod tests {
+        #[test]
+        fn value_readers() {
+            use crate::frequency::*;
+
+            assert_eq!(10_000.0, (10.0 * kHz).Hz());
+        }
+
         #[test]
         fn convert_division() {
             use crate::time::*;
