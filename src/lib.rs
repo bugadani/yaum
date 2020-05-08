@@ -17,7 +17,7 @@ macro_rules! impl_unit {
 
     ($type:ident, $basetype:ty, {$( $unit:ident: $value:expr ),*}) => {
         #[derive(Copy, Clone, Debug, Default, PartialEq, PartialOrd)]
-        pub struct $type(pub $basetype);
+        pub struct $type($basetype);
 
         impl $type {
             pub const fn new(value: $basetype) -> Self {
@@ -92,7 +92,7 @@ macro_rules! convert_div {
             type Output = $result;
 
             fn div(self, rhs: $right) -> Self::Output {
-                <$result>::new(self.0 / rhs.0)
+                <$result>::new(self.dimensionless() / rhs.dimensionless())
             }
         }
     };
@@ -200,7 +200,7 @@ pub mod conversions {
 
             let f = 50.0 * Hz;
 
-            assert_eq!(AngularFrequency(100.0 * PI), f.into());
+            assert_eq!(AngularFrequency::new(100.0 * PI), f.into());
         }
     }
 }
