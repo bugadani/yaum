@@ -3,6 +3,7 @@ name = "yaum"
 version = "0.1.0"
 license = "MIT"
 description = "Yet Another Units of Measurement"
+repository = "https://github.com/bugadani/yaum"
 authors = ["Dániel Buga <daniel@revolutionrobotics.org>"]
 edition = "2018"
 
