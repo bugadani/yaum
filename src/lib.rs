@@ -258,12 +258,22 @@ pub mod frequency {
         ksps: 1_000.0
     });
     impl_unit!(AngularFrequency, {
-        rad_per_s: 1.0
+        rad_per_s: 1.0,
+        deg_per_s: 0.0174533
     });
 
     pub type SamplingFrequency = Frequency;
 
     convert_unit!(Frequency, AngularFrequency, 2.0 * core::f32::consts::PI);
+}
+
+pub mod angle {
+    impl_unit!(Angle, {
+        deg: 0.0174533,
+        rad: 1.0
+    });
+
+    pub type AngularSpeed = crate::frequency::AngularFrequency;
 }
 
 pub mod time {
@@ -278,15 +288,24 @@ pub mod time {
 
 pub mod length {
     impl_unit!(Length, {
+        um: 0.000_001,
+        mm: 0.001,
+        cm: 0.01,
         m: 1.0,
-        km: 1_000.0
+        km: 1_000.0,
+
+        inch: 0.0254,
+        ft: 0.3048,
+        yard: 0.9144,
+        mile: 1_609.34
     });
 }
 
 pub mod velocity {
     impl_unit!(Velocity, {
         mps: 1.0,
-        kph: 1_000.0 / 3_600.0
+        kph: 1_000.0 / 3_600.0,
+        mph: 1_609.34 / 3_600.0
     });
     impl_unit!(Acceleration, {
         mps2: 1.0
@@ -306,6 +325,7 @@ pub mod conversions {
 
     convert_div!(length::Length, time::Time, velocity::Velocity);
     convert_div!(velocity::Velocity, time::Time, velocity::Acceleration);
+    convert_div!(angle::Angle, time::Time, angle::AngularSpeed);
 
     #[cfg(test)]
     mod tests {
