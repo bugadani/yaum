@@ -1,3 +1,7 @@
+0.1.2
+=====
+* Fix incorrect documentation
+
 0.1.1
 =====
 * Fix wrong result when using reader methods
