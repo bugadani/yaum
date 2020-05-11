@@ -28,6 +28,7 @@ Currently supported units:
 * `frequency`: Frequency, sampling frequency
 * `length`: Length
 * `velocity`: Velocity, acceleration
+* `electric`: Current, Voltage, Resistance
 
 Define custom units and conversions using the `impl_unit!`, `convert_div!` and `convert_unit!` macros.
 

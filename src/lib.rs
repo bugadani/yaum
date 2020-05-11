@@ -23,6 +23,7 @@
 //! * `frequency`: Frequency, sampling frequency
 //! * `length`: Length
 //! * `velocity`: Velocity, acceleration
+//! * `electric`: Current, Voltage, Resistance
 //!
 //! Define custom units and conversions using the `impl_unit!`, `convert_div!` and `convert_unit!` macros.
 //!
@@ -318,6 +319,29 @@ pub mod velocity {
         pub const c: Velocity = Velocity(299_792_458.0);
         pub const g: Acceleration = Acceleration(9.80665);
     }
+}
+
+pub mod electric {
+    impl_unit!(Voltage, {
+        uV: 0.000_001,
+        mV: 0.001,
+        V: 1.0,
+        kV: 1_000.0
+    });
+    impl_unit!(Current, {
+        uA: 0.000_001,
+        mA: 0.001,
+        A: 1.0,
+        kA: 1_000.0
+    });
+    impl_unit!(Resistance, {
+        uOhm: 0.000_001,
+        mOhm: 0.001,
+        Ohm: 1.0,
+        kOhm: 1_000.0
+    });
+
+    convert_div!(Voltage, Current, Resistance);
 }
 
 pub mod conversions {

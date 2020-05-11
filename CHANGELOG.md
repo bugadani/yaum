@@ -1,3 +1,7 @@
+Unreleased
+==========
+* Added `electric`
+
 0.1.2
 =====
 * Fix incorrect documentation
