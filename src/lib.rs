@@ -111,7 +111,7 @@ macro_rules! impl_unit {
             }
 
             $( pub fn $unit(self) -> $basetype {
-                self.dimensionless() * $value
+                self.dimensionless() / $value
             } )*
         }
 
@@ -312,8 +312,10 @@ pub mod conversions {
         #[test]
         fn value_readers() {
             use crate::frequency::*;
+            use crate::time::*;
 
             assert_eq!(10_000.0, (10.0 * kHz).Hz());
+            assert_eq!(16.0, (16.0 * ms).ms());
         }
 
         #[test]
