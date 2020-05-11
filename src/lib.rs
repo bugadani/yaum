@@ -19,10 +19,10 @@
 //!
 //! Currently supported units:
 //! * `time`: Time
-//! * `frequency`: Frequency
+//! * `angle`: Angle, angular speed
+//! * `frequency`: Frequency, sampling frequency
 //! * `length`: Length
-//! * `velocity`: Velocity, Acceleration
-//! * `digital`: LSB (least significant bits)
+//! * `velocity`: Velocity, acceleration
 //!
 //! Define custom units and conversions using the `impl_unit!`, `convert_div!` and `convert_unit!` macros.
 //!
